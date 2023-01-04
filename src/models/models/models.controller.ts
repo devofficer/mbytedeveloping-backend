@@ -17,23 +17,6 @@ export class ModelsController {
   }
 
   @Post('create')
-  async create(@Body() modelData: Model): Promise<any> {
-    return this.modelsService.create(modelData);
-  }
-
-  @Put(':id/update')
-  async update(@Param('id') id, @Body() modelData: Model): Promise<any> {
-    modelData.id = Number(id);
-    console.log('Update #' + modelData.id)
-    return this.modelsService.update(modelData);
-  }
-
-  @Delete(':id/delete')
-  async delete(@Param('id') id): Promise<any> {
-    return this.modelsService.delete(id);
-  }
-
-  @Post(':id/model')
   @UseInterceptors(FileInterceptor('file',
     {
       storage: diskStorage({
@@ -47,8 +30,20 @@ export class ModelsController {
     }
   )
   )
-  uploadModel(@Param('modelId') modelId, @UploadedFile() file) {
-    this.modelsService.setModel(Number(modelId), `${this.SERVER_URL}${file.path}`);
+  async create(@Body() modelData: Model, @UploadedFile() file): Promise<any> {
+    return this.modelsService.create(modelData, `${this.SERVER_URL}files/${file.path}`);
+  }
+
+  @Put(':id/update')
+  async update(@Param('id') id, @Body() modelData: Model): Promise<any> {
+    modelData.id = Number(id);
+    console.log('Update #' + modelData.id)
+    return this.modelsService.update(modelData);
+  }
+
+  @Delete(':id/delete')
+  async delete(@Param('id') id): Promise<any> {
+    return this.modelsService.delete(id);
   }
 
   @Get('files/:fileId')

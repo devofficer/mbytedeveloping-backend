@@ -13,8 +13,8 @@ export class ModelsService {
         return await this.modelRepository.find();
     }
 
-    async create(model: Model): Promise<Model> {
-        return await this.modelRepository.save(model);
+    async create(model: Model, filePath: string): Promise<Model> {
+        return await this.modelRepository.save({...model, url: filePath});
     }
 
     async update(model: Model): Promise<UpdateResult> {
@@ -24,9 +24,5 @@ export class ModelsService {
 
     async delete(id): Promise<DeleteResult> {
         return await this.modelRepository.delete(id);
-    }
-
-    public async setModel(modelId: number, modelUrl: string) {
-        this.modelRepository.update(modelId, { model: modelUrl });
     }
 }

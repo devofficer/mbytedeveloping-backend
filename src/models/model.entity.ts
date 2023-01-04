@@ -9,5 +9,5 @@ export class Model {
   name: string;
 
   @Column()
-  model: string;  
+  url: string;  
 }
