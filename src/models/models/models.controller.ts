@@ -7,7 +7,7 @@ import { extname } from 'path';
 
 @Controller('models')
 export class ModelsController {
-  SERVER_URL: string = "http://localhost:3000/";
+  SERVER_URL: string = "http://localhost:3001/";
 
   constructor(private modelsService: ModelsService) { }
 
@@ -31,7 +31,7 @@ export class ModelsController {
   )
   )
   async create(@Body() modelData: Model, @UploadedFile() file): Promise<any> {
-    return this.modelsService.create(modelData, `${this.SERVER_URL}files/${file.path}`);
+    return this.modelsService.create(modelData, `${this.SERVER_URL}${file.path}`);
   }
 
   @Put(':id/update')
@@ -46,7 +46,7 @@ export class ModelsController {
     return this.modelsService.delete(id);
   }
 
-  @Get('files/:fileId')
+  @Get(':fileId')
   async serveAvatar(@Param('fileId') fileId, @Res() res): Promise<any> {
     res.sendFile(fileId, { root: 'models' });
   }
